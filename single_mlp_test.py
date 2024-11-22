@@ -4,16 +4,20 @@ from torch.utils.data import Dataset, DataLoader
 from sklearn.metrics import accuracy_score, f1_score
 from model.single_mlp import SingleTaskDataset, SingleTaskMLP
 
+device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+
 # 测试函数
 def evaluate_model(model, dataloader):
     model.eval()
     all_labels, all_preds = [], []
     with torch.no_grad():
         for features, labels in dataloader:
+            features, labels = features.to(device), labels.to(device)  # 数据转到 GPU
             outputs = model(features)
             preds = torch.argmax(outputs, dim=1)
-            all_labels.extend(labels.numpy())
-            all_preds.extend(preds.numpy())
+            # 将 GPU 张量转为 NumPy
+            all_labels.extend(labels.cpu().numpy())
+            all_preds.extend(preds.cpu().numpy())
 
     acc = accuracy_score(all_labels, all_preds)
     f1 = f1_score(all_labels, all_preds, average='weighted')
@@ -23,7 +27,6 @@ def evaluate_model(model, dataloader):
 # 主函数
 def main():
     # 加载模型和数据到 GPU
-    device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
 
     csv_test_file = 'data/test.csv'  # 替换为您的测试集 CSV 文件路径

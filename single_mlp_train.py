@@ -44,7 +44,7 @@ def main():
     emotion_optimizer = optim.Adam(emotion_model.parameters(), lr=0.001)
 
     train_model(emotion_model, emotion_train_loader, emotion_criterion, emotion_optimizer, device, epochs=20)
-    torch.save(emotion_model.state_dict(), 'emotion_model.pth')
+    torch.save(emotion_model.state_dict(), 'pth/emotion_model.pth')
     print("Emotion model saved as 'emotion_mlp_model.pth'")
 
     # 训练专注度识别模型
