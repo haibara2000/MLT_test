@@ -3,7 +3,7 @@ import torch.nn as nn
 import torch.optim as optim
 from torch.utils.data import DataLoader
 import pandas as pd
-from model.shared_bottom_mlp import SharedBottomModel
+from model.shared_bottom_mlp import SharedBottomMlpModel
 from data.load_data_in_turn import EmotionFocusDataset
 
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')  # 检查是否有 GPU
@@ -21,13 +21,13 @@ emotion_output_dim = len(pd.read_csv(csv_file)['emotion'].unique())  # 表情类
 focus_output_dim = len(pd.read_csv(csv_file)['if_focus'].unique())  # 专注度类别数
 
 # 初始化模型、损失函数和优化器
-model = SharedBottomModel(input_dim, shared_hidden_dim, emotion_output_dim, focus_output_dim)
+model = SharedBottomMlpModel(input_dim, shared_hidden_dim, emotion_output_dim, focus_output_dim)
 emotion_criterion = nn.CrossEntropyLoss()  # 表情任务的损失
 focus_criterion = nn.CrossEntropyLoss()  # 专注度任务的损失
-optimizer = optim.Adam(model.parameters(), lr=0.001)
+optimizer = optim.Adam(model.parameters(), lr=0.01)
 
 # 训练模型
-epochs = 50
+epochs = 30
 for epoch in range(epochs):
     model.train()
     model.to(device)  # 将模型部署到 GPU
@@ -59,4 +59,4 @@ for epoch in range(epochs):
 
 # 保存模型
 torch.save(model.state_dict(), 'pth/shared_bottom_mlp_model.pth')
-print("模型已保存为 'shared_bottom_model1.pth'")
+print("模型已保存为 'shared_bottom_mlp_model.pth'")

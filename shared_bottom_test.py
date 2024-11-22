@@ -1,7 +1,7 @@
 import torch
 from sklearn.metrics import accuracy_score, roc_auc_score, f1_score
 import torch.nn.functional as F
-from model.shared_bottom_mlp import SharedBottomModel
+from model.shared_bottom_mlp import SharedBottomMlpModel
 from data.load_data_in_turn import EmotionFocusDataset
 from torch.utils.data import DataLoader
 import pandas as pd
@@ -20,8 +20,8 @@ input_dim = 58
 shared_hidden_dim = 128
 emotion_output_dim = len(pd.read_csv(csv_test_file)['emotion'].unique())  # 表情类别数
 focus_output_dim = len(pd.read_csv(csv_test_file)['if_focus'].unique())  # 专注度类别数
-model = SharedBottomModel(input_dim, shared_hidden_dim, emotion_output_dim, focus_output_dim)
-model.load_state_dict(torch.load('pth/shared_bottom_model1.pth'))
+model = SharedBottomMlpModel(input_dim, shared_hidden_dim, emotion_output_dim, focus_output_dim)
+model.load_state_dict(torch.load('pth/shared_bottom_mlp_model.pth'))
 model.to(device)  # 将模型转移到 GPU
 model.eval()  # 切换到评估模式
 
@@ -49,12 +49,12 @@ with torch.no_grad():
         focus_pred_label = torch.argmax(focus_prob, dim=1)
 
         # 保存标签和预测
-        all_emotion_labels.extend(emotion_labels.numpy())
-        all_focus_labels.extend(focus_labels.numpy())
-        all_emotion_preds.extend(emotion_pred_label.numpy())
-        all_focus_preds.extend(focus_pred_label.numpy())
-        all_emotion_probs.extend(emotion_prob.numpy())
-        all_focus_probs.extend(focus_prob.numpy())
+        all_emotion_labels.extend(emotion_labels.cpu().numpy())
+        all_focus_labels.extend(focus_labels.cpu().numpy())
+        all_emotion_preds.extend(emotion_pred_label.cpu().numpy())
+        all_focus_preds.extend(focus_pred_label.cpu().numpy())
+        all_emotion_probs.extend(emotion_prob.cpu().numpy())
+        all_focus_probs.extend(focus_prob.cpu().numpy())
 
 # 计算情绪任务的指标
 emotion_acc = accuracy_score(all_emotion_labels, all_emotion_preds)
