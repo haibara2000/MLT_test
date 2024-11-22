@@ -37,7 +37,7 @@ def main():
     emotion_hidden_dim = 128
     emotion_output_dim = len(pd.read_csv(csv_test_file)['emotion'].unique())
     emotion_model = SingleTaskMLP(emotion_input_dim, emotion_hidden_dim, emotion_output_dim)
-    emotion_model.load_state_dict(torch.load('emotion_model.pth'))
+    emotion_model.load_state_dict(torch.load('pth/emotion_model.pth'))
     emotion_model.to(device)  # 将模型转移到 GPU
     evaluate_model(emotion_model, emotion_test_loader)
 
@@ -50,7 +50,7 @@ def main():
     focus_hidden_dim = 128
     focus_output_dim = len(pd.read_csv(csv_test_file)['if_focus'].unique())
     focus_model = SingleTaskMLP(focus_input_dim, focus_hidden_dim, focus_output_dim)
-    focus_model.load_state_dict(torch.load('focus_model.pth'))
+    focus_model.load_state_dict(torch.load('pth/focus_model.pth'))
     focus_model.to(device)  # 将模型转移到 GPU
     evaluate_model(focus_model, focus_test_loader)
 
