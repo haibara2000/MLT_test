@@ -31,7 +31,7 @@ class EmotionFocusDataset(Dataset):
                 continue
 
             # 封装成矩阵
-            self.features.append(feature_block.reshape(1, 2, 30))  # (1, 2, 30)
+            self.features.append(feature_block.reshape(1, 58, 30))  # (1, 58, 30)
 
             # 找到频率最高的标签
             self.emotion_labels.append(np.bincount(emotion_block).argmax())  # 统计表情

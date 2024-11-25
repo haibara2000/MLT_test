@@ -25,7 +25,7 @@ focus_criterion = nn.CrossEntropyLoss()  # 专注度任务损失
 optimizer = optim.Adam(model.parameters(), lr=0.001)
 
 # 训练模型
-epochs = 50
+epochs = 25
 for epoch in range(epochs):
     model.train()
     model.to(device)  # 将模型部署到 GPU
@@ -56,5 +56,5 @@ for epoch in range(epochs):
     print(f"Epoch [{epoch+1}/{epochs}], Emotion Loss: {total_emotion_loss:.4f}, Focus Loss: {total_focus_loss:.4f}")
 
 # 保存模型
-torch.save(model.state_dict(), 'shared_bottom_cnn_model.pth')
+torch.save(model.state_dict(), 'pth/shared_bottom_cnn_model.pth')
 print("模型已保存为 'shared_bottom_cnn_model.pth'")

@@ -59,7 +59,7 @@ with torch.no_grad():
 # 计算情绪任务的指标
 emotion_acc = accuracy_score(all_emotion_labels, all_emotion_preds)
 emotion_f1 = f1_score(all_emotion_labels, all_emotion_preds, average='weighted')
-emotion_auc = roc_auc_score(all_emotion_labels, all_emotion_probs, multi_class='ovr')
+# emotion_auc = roc_auc_score(all_emotion_labels, all_emotion_probs, multi_class='ovr')
 
 # 计算专注度任务的指标
 all_focus_labels_one_hot = label_binarize(all_focus_labels, classes=range(focus_output_dim))
@@ -70,5 +70,6 @@ focus_f1 = f1_score(all_focus_labels, all_focus_preds, average='weighted')
 # 输出测试结果
 # print(f"Emotion Task - Accuracy: {emotion_acc:.4f}, F1 Score: {emotion_f1:.4f}, AUC: {emotion_auc:.4f}")
 # print(f"Focus Task - Accuracy: {focus_acc:.4f}, F1 Score: {focus_f1:.4f}, AUC: {focus_auc:.4f}")
+print("result of shared_bottom_mlp:")
 print(f"Emotion Task - Accuracy: {emotion_acc:.4f}, F1 Score: {emotion_f1:.4f}")
 print(f"Focus Task - Accuracy: {focus_acc:.4f}, F1 Score: {focus_f1:.4f}")
