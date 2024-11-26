@@ -17,7 +17,7 @@ test_dataloader = DataLoader(test_dataset, batch_size=32, shuffle=False)
 emotion_output_dim = len(pd.read_csv(csv_test_file)['emotion'].unique())  # 表情类别数
 focus_output_dim = len(pd.read_csv(csv_test_file)['if_focus'].unique())  # 专注度类别数
 model = SharedBottomCNNModel(emotion_output_dim, focus_output_dim)
-model.load_state_dict(torch.load('pth/shared_bottom_cnn_model1.pth'))
+model.load_state_dict(torch.load('pth/shared_bottom_cnn_uncertainty_model.pth'))
 model.eval()
 
 # 初始化指标
@@ -59,6 +59,6 @@ focus_f1 = f1_score(all_focus_labels, all_focus_preds, average='weighted')
 # focus_auc = roc_auc_score(all_focus_labels, all_focus_probs, multi_class='ovr')
 
 # 输出测试结果
-print("result of shared_bottom_cnn:")
+print("result of shared_bottom_cnn_uncertainty:")
 print(f"Emotion Task - Accuracy: {emotion_acc:.4f}, F1 Score: {emotion_f1:.4f}")
 print(f"Focus Task - Accuracy: {focus_acc:.4f}, F1 Score: {focus_f1:.4f}")
