@@ -20,3 +20,15 @@ class EmotionFocusDataset(Dataset):
 
     def __getitem__(self, idx):
         return self.features[idx], self.emotion_labels[idx], self.focus_labels[idx]
+
+# 将数据加载到内存中（适用于 XGBoost）
+def prepare_data(loader):
+    features_list, emotion_labels_list, focus_labels_list = [], [], []
+    for features, emotion_labels, focus_labels in loader:
+        features_list.append(features.numpy())
+        emotion_labels_list.append(emotion_labels.numpy())
+        focus_labels_list.append(focus_labels.numpy())
+    features = np.vstack(features_list)
+    emotion_labels = np.concatenate(emotion_labels_list)
+    focus_labels = np.concatenate(focus_labels_list)
+    return features, emotion_labels, focus_labels
