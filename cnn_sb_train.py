@@ -25,12 +25,15 @@ focus_criterion = nn.CrossEntropyLoss()  # 专注度任务损失
 optimizer = optim.Adam(model.parameters(), lr=0.001)
 
 # 训练模型
-epochs = 10
+epochs = 20
 for epoch in range(epochs):
     model.train()
     model.to(device)  # 将模型部署到 GPU
     total_emotion_loss = 0
     total_focus_loss = 0
+    correct_emotion = 0
+    correct_focus = 0
+    total_samples = 0
 
     for features, emotion_labels, focus_labels in dataloader:
         features, emotion_labels, focus_labels = (features.to(device),
@@ -52,9 +55,22 @@ for epoch in range(epochs):
         total_emotion_loss += emotion_loss.item()
         total_focus_loss += focus_loss.item()
 
-    # 打印每个 epoch 的损失
-    print(f"Epoch [{epoch+1}/{epochs}], Emotion Loss: {total_emotion_loss:.4f}, Focus Loss: {total_focus_loss:.4f}")
+        # 计算准确率
+        _, predicted_emotion = torch.max(emotion_pred, 1)
+        _, predicted_focus = torch.max(focus_pred, 1)
+        correct_emotion += (predicted_emotion == emotion_labels).sum().item()
+        correct_focus += (predicted_focus == focus_labels).sum().item()
+        total_samples += emotion_labels.size(0)
 
-# 保存模型
-torch.save(model.state_dict(), 'pth/shared_bottom_cnn_model1.pth')
-print("模型已保存为 'shared_bottom_cnn_model.pth'")
+    # 计算准确率
+    emotion_accuracy = correct_emotion / total_samples
+    focus_accuracy = correct_focus / total_samples
+
+    # 打印每个 epoch 的损失和准确率
+    print(f"Epoch [{epoch + 1}/{epochs}], "
+          f"Emotion Loss: {total_emotion_loss:.4f}, Focus Loss: {total_focus_loss:.4f}, "
+          f"Emotion Accuracy: {emotion_accuracy:.4f}, Focus Accuracy: {focus_accuracy:.4f}")
+
+# # 保存模型
+# torch.save(model.state_dict(), 'pth/shared_bottom_cnn_model1.pth')
+# print("模型已保存为 'shared_bottom_cnn_model.pth'")
