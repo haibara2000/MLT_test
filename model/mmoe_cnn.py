@@ -67,4 +67,3 @@ class MMoECNNModel(nn.Module):
         focus_output = self.focus_branch(focus_output)
 
         return emotion_output, focus_output
-
