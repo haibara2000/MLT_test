@@ -17,8 +17,9 @@ test_dataloader = DataLoader(test_dataset, batch_size=32, shuffle=False)
 emotion_output_dim = len(pd.read_csv(csv_test_file)['emotion'].unique())  # 表情类别数
 focus_output_dim = len(pd.read_csv(csv_test_file)['if_focus'].unique())  # 专注度类别数
 model = MMoECNNModel(emotion_output_dim, focus_output_dim)
-# model.load_state_dict(torch.load('pth/mmoe_cnn_model2.pth'))
-model.load_state_dict(torch.load('pth/mmoe_cnn_uncertainty_model1.pth'))
+model.load_state_dict(torch.load('pth/mmoe_cnn_model2.pth'))  # 0.2968, 0.8462
+# model.load_state_dict(torch.load('pth/mmoe_cnn_uncertainty_model1.pth')) # 0.2968, 0.8348
+# model.load_state_dict(torch.load('pth/mmoe_cnn_model1.pth'))  # 0.2997, 0.8491
 model.eval()
 
 # 初始化指标

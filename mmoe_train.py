@@ -33,12 +33,24 @@ optimizer = optim.Adam(
     lr=0.001
 )
 
+# 计算准确率的函数
+def calculate_accuracy(predictions, labels):
+    # 预测的标签是每个类别的概率中最大值的索引
+    _, predicted_labels = torch.max(predictions, 1)
+    # 计算准确率
+    correct = (predicted_labels == labels).sum().item()
+    accuracy = correct / labels.size(0)  # accuracy = correct / batch_size
+    return accuracy
+
 # 训练过程
-epochs = 20
+epochs = 50
 for epoch in range(epochs):
     model.train()
     total_emotion_loss = 0.0
     total_focus_loss = 0.0
+    total_emotion_accuracy = 0.0
+    total_focus_accuracy = 0.0
+    total_samples = 0
 
     for features, emotion_labels, focus_labels in dataloader:
         features, emotion_labels, focus_labels = (
@@ -67,13 +79,26 @@ for epoch in range(epochs):
         total_emotion_loss += emotion_loss.item()
         total_focus_loss += focus_loss.item()
 
+        # 计算准确率
+        emotion_accuracy = calculate_accuracy(emotion_pred, emotion_labels)
+        focus_accuracy = calculate_accuracy(focus_pred, focus_labels)
+
+        total_emotion_loss += emotion_loss.item()
+        total_focus_loss += focus_loss.item()
+        total_emotion_accuracy += emotion_accuracy * features.size(0)  # 累加每个批次的样本数
+        total_focus_accuracy += focus_accuracy * features.size(0)  # 累加每个批次的样本数
+        total_samples += features.size(0)
+
+    # 打印每个 epoch 的损失和准确率
+    epoch_emotion_accuracy = total_emotion_accuracy / total_samples
+    epoch_focus_accuracy = total_focus_accuracy / total_samples
+
     # 打印每个 epoch 的损失和权重
-    print(f"Epoch [{epoch+1}/{epochs}], Emotion Loss: {total_emotion_loss:.4f}, "
-          f"Focus Loss: {total_focus_loss:.4f}, "
-          f"log_sigma_emotion: {log_sigma_emotion.item():.4f}, "
-          f"log_sigma_focus: {log_sigma_focus.item():.4f}")
+    print(f"Epoch [{epoch+1}/{epochs}], Emotion Loss: {total_emotion_loss:.4f}, Focus Loss: {total_focus_loss:.4f}, "
+          f"Emotion Accuracy: {epoch_emotion_accuracy:.4f}, Focus Accuracy: {epoch_focus_accuracy:.4f}, "
+          f"log_sigma_emotion: {log_sigma_emotion.item():.4f}, log_sigma_focus: {log_sigma_focus.item():.4f}")
 
 # 保存模型
-torch.save(model.state_dict(), 'pth/mmoe_cnn_uncertainty_model1.pth')
+torch.save(model.state_dict(), 'pth/mmoe_cnn_uncertainty_model2.pth')
 torch.save({'log_sigma_emotion': log_sigma_emotion, 'log_sigma_focus': log_sigma_focus}, 'pth/loss_weights.pth')
 print("模型及损失权重已保存")

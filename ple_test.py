@@ -2,7 +2,7 @@ import torch
 from torch.utils.data import DataLoader
 from sklearn.metrics import accuracy_score, f1_score
 from data.load_data_in_group import EmotionFocusDataset
-from model.ple1 import PLEModel
+from model.ple2 import PLEModel
 import torch.nn.functional as F
 import pandas as pd
 
@@ -15,16 +15,27 @@ test_dataloader = DataLoader(test_dataset, batch_size=32, shuffle=False)
 emotion_output_dim = len(pd.read_csv(csv_test_file)['emotion'].unique())
 focus_output_dim = len(pd.read_csv(csv_test_file)['if_focus'].unique())
 # 初始化模型
+# ple_cnn_model2的参数: 27,73
+# model = PLEModel(num_CGC_layers=2,
+#                  input_size=58,
+#                  emotion_output_dim=emotion_output_dim,
+#                  focus_output_dim=focus_output_dim,
+#                  num_specific_experts=1,
+#                  num_shared_experts=1,
+#                  experts_out=32,
+#                  experts_hidden=64,
+#                  towers_hidden=128)
 model = PLEModel(num_CGC_layers=2,
                  input_size=58,
                  emotion_output_dim=emotion_output_dim,
                  focus_output_dim=focus_output_dim,
-                 num_specific_experts=4,
-                 num_shared_experts=4,
+                 num_specific_experts=1,
+                 num_shared_experts=1,
                  experts_out=32,
                  experts_hidden=64,
                  towers_hidden=128)
-model.load_state_dict(torch.load('pth/ple_cnn_model.pth'))
+model.load_state_dict(torch.load('pth/ple_cnn_model5.pth'))   # 0.2601, 0.7266
+# model.load_state_dict(torch.load('pth/ple_uncertainty_model1.pth'))  # 0.2968, 0.7013
 model.eval()
 
 # 初始化指标
