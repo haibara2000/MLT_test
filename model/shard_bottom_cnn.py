@@ -20,6 +20,7 @@ class SharedBottomCNNModel(nn.Module):
             nn.Flatten()  # 输出 (32 * 14 * 7 = 3136)
         )
         shared_output_dim = 32 * 14 * 7  # Flatten 后的维度
+        # shared_output_dim = 2464  # 新数据
 
         # 表情任务分支
         self.emotion_branch = nn.Sequential(

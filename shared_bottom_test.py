@@ -10,7 +10,7 @@ from sklearn.preprocessing import label_binarize
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
 # 加载测试数据
-csv_test_file = 'data/test.csv'  # 替换为您的测试集 CSV 文件路径
+csv_test_file = 'data/normalized_test.csv'  # 替换为您的测试集 CSV 文件路径
 test_dataset = EmotionFocusDataset(csv_test_file)
 test_dataloader = DataLoader(test_dataset, batch_size=32, shuffle=False)
 

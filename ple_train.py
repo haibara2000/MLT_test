@@ -92,5 +92,5 @@ for epoch in range(epochs):
           f"Emotion Accuracy: {epoch_emotion_accuracy:.4f}, Focus Accuracy: {epoch_focus_accuracy:.4f}")
 
 # 保存模型
-torch.save(model.state_dict(), 'pth/ple_cnn_model7.pth')
+torch.save(model.state_dict(), 'pth1/ple_cnn_model.pth')
 print("模型已保存")

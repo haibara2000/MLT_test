@@ -8,7 +8,7 @@ import joblib  # 用于保存和加载模型
 import os
 
 # 定义数据加载器
-train_csv = 'data/train.csv'
+train_csv = 'data/normalized_train.csv'
 batch_size = 32
 
 train_dataset = EmotionFocusDataset(train_csv)

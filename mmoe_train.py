@@ -3,14 +3,15 @@ import torch.nn as nn
 import torch.optim as optim
 from torch.utils.data import Dataset, DataLoader
 import pandas as pd
-from model.mmoe_cnn import MMoECNNModel  # 假设模型保存在 `model/mmoe_cnn.py` 中
-from data.load_data_in_group import EmotionFocusDataset  # 假设数据加载类在 `data/load_data_in_group.py` 中
+from model.mmoe_cnn import MMoECNNModel  # 模型类在 `model/mmoe_cnn.py` 中
+from data.load_data_in_group import EmotionFocusDataset  # 数据加载类在 `data/load_data_in_group.py` 中
 
 # 设置设备
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 print(f"Using device: {device}")
 
 # 数据加载
+# csv_file = 'data/train.csv'  # 替换为您的 CSV 文件路径
 csv_file = 'data/train.csv'  # 替换为您的 CSV 文件路径
 dataset = EmotionFocusDataset(csv_file)
 dataloader = DataLoader(dataset, batch_size=32, shuffle=True)
@@ -20,7 +21,7 @@ emotion_output_dim = len(pd.read_csv(csv_file)['emotion'].unique())  # 表情类
 focus_output_dim = len(pd.read_csv(csv_file)['if_focus'].unique())  # 专注度类别数
 
 # 初始化模型、损失函数和优化器
-model = MMoECNNModel(emotion_output_dim, focus_output_dim, num_experts=4).to(device)
+model = MMoECNNModel(emotion_output_dim, focus_output_dim, num_experts=6).to(device)
 emotion_criterion = nn.CrossEntropyLoss()  # 表情任务损失
 focus_criterion = nn.CrossEntropyLoss()  # 专注度任务损失
 # 引入可训练的不确定性参数（log_sigma^2），用于调整权重
@@ -43,7 +44,7 @@ def calculate_accuracy(predictions, labels):
     return accuracy
 
 # 训练过程
-epochs = 50
+epochs = 30
 for epoch in range(epochs):
     model.train()
     total_emotion_loss = 0.0
@@ -99,6 +100,7 @@ for epoch in range(epochs):
           f"log_sigma_emotion: {log_sigma_emotion.item():.4f}, log_sigma_focus: {log_sigma_focus.item():.4f}")
 
 # 保存模型
-torch.save(model.state_dict(), 'pth/mmoe_cnn_uncertainty_model2.pth')
-torch.save({'log_sigma_emotion': log_sigma_emotion, 'log_sigma_focus': log_sigma_focus}, 'pth/loss_weights.pth')
+torch.save(model.state_dict(), 'pth1/mmoe_cnn_model.pth')
+# torch.save({'log_sigma_emotion': log_sigma_emotion, 'log_sigma_focus': log_sigma_focus},
+#            'pth/loss_weights.pth')
 print("模型及损失权重已保存")

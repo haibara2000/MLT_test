@@ -7,7 +7,7 @@ import torch.nn.functional as F
 import pandas as pd
 
 # 加载测试数据
-csv_test_file = 'data/test.csv'
+csv_test_file = 'data/normalized_test.csv'
 test_dataset = EmotionFocusDataset(csv_test_file)
 test_dataloader = DataLoader(test_dataset, batch_size=32, shuffle=False)
 
@@ -25,7 +25,8 @@ focus_output_dim = len(pd.read_csv(csv_test_file)['if_focus'].unique())
 #                  experts_out=32,
 #                  experts_hidden=64,
 #                  towers_hidden=128)
-model = PLEModel(num_CGC_layers=2,
+# 初始化模型
+model = PLEModel(num_CGC_layers=1,
                  input_size=58,
                  emotion_output_dim=emotion_output_dim,
                  focus_output_dim=focus_output_dim,
@@ -34,8 +35,9 @@ model = PLEModel(num_CGC_layers=2,
                  experts_out=32,
                  experts_hidden=64,
                  towers_hidden=128)
-model.load_state_dict(torch.load('pth/ple_cnn_model5.pth'))   # 0.2601, 0.7266
-# model.load_state_dict(torch.load('pth/ple_uncertainty_model1.pth'))  # 0.2968, 0.7013
+# model.load_state_dict(torch.load('pth/ple_cnn_model5.pth'))   # 0.2601, 0.7266
+model.load_state_dict(torch.load('pth/ple_uncertainty_model.pth'))  # 0.2968, 0.7013
+# model.load_state_dict(torch.load('pth/ple_uncertainty_model2.pth'))  # 0.2968, 0.7013
 model.eval()
 
 # 初始化指标

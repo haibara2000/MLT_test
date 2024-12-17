@@ -7,7 +7,7 @@ import numpy as np
 import os
 
 # 定义数据加载器
-train_csv = 'data/train.csv'
+train_csv = 'data/normalized_train.csv'
 batch_size = 32
 
 train_dataset = EmotionFocusDataset(train_csv)
@@ -30,5 +30,5 @@ focus_model.fit(X_train, y_train_focus)
 
 # 保存模型到一个 `.pth` 文件
 os.makedirs('models', exist_ok=True)
-torch.save({'emotion_model': emotion_model, 'focus_model': focus_model}, 'pth/dt_models.pth')
+torch.save({'emotion_model': emotion_model, 'focus_model': focus_model}, 'pth/decision_tree_models.pth')
 print("Combined model saved as 'pth/dt_models.pth'")

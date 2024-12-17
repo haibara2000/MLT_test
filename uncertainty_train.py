@@ -10,7 +10,8 @@ from data.load_data_in_group import EmotionFocusDataset
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')  # 检查是否有 GPU
 print(f"Using device: {device}")
 # 加载数据
-csv_file = 'data/train.csv'  # 替换为您的 CSV 文件路径
+# csv_file = 'data/train.csv'
+csv_file = 'data/balanced_train.csv'
 dataset = EmotionFocusDataset(csv_file)
 dataloader = DataLoader(dataset, batch_size=32, shuffle=True)
 
@@ -71,6 +72,7 @@ for epoch in range(epochs):
           f"log_sigma_focus: {log_sigma_focus.item():.4f}")
 
 # 保存模型
-torch.save(model.state_dict(), 'pth/shared_bottom_cnn_uncertainty_model.pth')
-torch.save({'log_sigma_emotion': log_sigma_emotion, 'log_sigma_focus': log_sigma_focus}, 'pth/loss_weights.pth')
+torch.save(model.state_dict(), 'pth/shared_bottom_cnn_uncertainty_model1.pth')
+torch.save({'log_sigma_emotion': log_sigma_emotion, 'log_sigma_focus': log_sigma_focus},
+           'pth_no_normalize/loss_weights.pth')
 print("模型及损失权重已保存")

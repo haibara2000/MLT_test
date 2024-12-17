@@ -116,5 +116,5 @@ for epoch in range(epochs):
             param.requires_grad = True  # 解冻情绪任务的参数
 
 # 保存模型
-torch.save(model.state_dict(), 'pth/ple_uncertainty_model_with_focus.pth')
+torch.save(model.state_dict(), 'pth_no_normalize/ple_uncertainty_model_with_focus.pth')
 print("模型已保存")

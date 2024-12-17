@@ -5,7 +5,8 @@ from torch.utils.data import Dataset, DataLoader
 import xgboost as xgb
 
 # 定义数据加载器
-test_csv = 'data/test.csv'
+# test_csv = 'data/normalized_test.csv'
+test_csv = 'data/balanced_test.csv'
 test_dataset = EmotionFocusDataset(test_csv)
 test_loader = DataLoader(test_dataset, batch_size=len(test_dataset), shuffle=False)
 
@@ -17,13 +18,14 @@ dtest_emotion = xgb.DMatrix(X_test, label=y_test_emotion)
 dtest_focus = xgb.DMatrix(X_test, label=y_test_focus)
 
 # 加载模型
-checkpoint = torch.load('pth/xgboost_models.pth')
+# checkpoint = torch.load('pth/xgboost_models.pth')
+checkpoint = torch.load('pth1/xgboost_models1.pth')
 bst_emotion = xgb.Booster()
 bst_emotion.load_model(checkpoint['emotion_model'])
 
 bst_focus = xgb.Booster()
 bst_focus.load_model(checkpoint['focus_model'])
-print("Models loaded from 'models/xgboost_models.pth'")
+print("Models loaded from 'xgboost_models.pth'")
 
 # 预测
 y_pred_emotion = bst_emotion.predict(dtest_emotion)

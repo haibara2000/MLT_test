@@ -15,7 +15,7 @@ hidden_dim = 128
 num_layers = 2
 
 # 数据加载
-csv_file = 'data/train.csv'
+csv_file = 'data/normalized_train.csv'
 dataset = EmotionFocusDataset(csv_file)
 train_loader = DataLoader(dataset, batch_size=batch_size, shuffle=True)
 

@@ -9,11 +9,11 @@ from model.single_cnn import SimpleCNN
 # 参数设置
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 batch_size = 32
-epochs = 20
+epochs = 50
 learning_rate = 0.001
 
 # 数据加载
-csv_file = 'data/train.csv'
+csv_file = 'data/balanced_train.csv'
 dataset = EmotionFocusDataset(csv_file)
 train_loader = DataLoader(dataset, batch_size=batch_size, shuffle=True)
 
@@ -29,6 +29,7 @@ emotion_optimizer = Adam(emotion_model.parameters(), lr=learning_rate)
 focus_optimizer = Adam(focus_model.parameters(), lr=learning_rate)
 
 # 训练循环
+
 for epoch in range(epochs):
     emotion_model.train()
     focus_model.train()
@@ -76,5 +77,5 @@ for epoch in range(epochs):
 torch.save({
     'emotion_model_state_dict': emotion_model.state_dict(),
     'focus_model_state_dict': focus_model.state_dict()
-}, 'pth/single_cnn_models.pth')
-print("模型已保存到 'pth/single_cnn_models1.pth'")
+}, 'pth1/single_cnn_models.pth')
+print("模型已保存到 'pth1/single_cnn_models.pth'")

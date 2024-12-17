@@ -6,11 +6,26 @@ import pandas as pd
 import numpy as np
 from model.shard_bottom_cnn import SharedBottomCNNModel
 from data.load_data_in_group import EmotionFocusDataset
+import random
+
+# 设置随机种子函数
+def set_random_seed(seed):
+    random.seed(seed)  # 设置Python的随机种子
+    np.random.seed(seed)  # 设置NumPy的随机种子
+    torch.manual_seed(seed)  # 设置CPU的随机种子
+    torch.cuda.manual_seed(seed)  # 设置GPU的随机种子
+    torch.cuda.manual_seed_all(seed)  # 设置所有GPU的随机种子（如果有多个GPU）
+    # torch.backends.cudnn.deterministic = True  # 让CUDNN算法是确定性的
+    # torch.backends.cudnn.benchmark = False  # 禁用CUDNN的自动选择算法
+
+# 设置随机种子
+seed = 42  # 你可以选择任何整数作为种子
+set_random_seed(seed)
 
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')  # 检查是否有 GPU
 print(f"Using device: {device}")
 # 加载数据
-csv_file = 'data/train.csv'  # 替换为您的 CSV 文件路径
+csv_file = 'data/normalized_train.csv'  # 替换为您的 CSV 文件路径
 dataset = EmotionFocusDataset(csv_file)
 dataloader = DataLoader(dataset, batch_size=32, shuffle=True)
 
@@ -25,7 +40,7 @@ focus_criterion = nn.CrossEntropyLoss()  # 专注度任务损失
 optimizer = optim.Adam(model.parameters(), lr=0.001)
 
 # 训练模型
-epochs = 20
+epochs = 30
 for epoch in range(epochs):
     model.train()
     model.to(device)  # 将模型部署到 GPU
@@ -71,6 +86,6 @@ for epoch in range(epochs):
           f"Emotion Loss: {total_emotion_loss:.4f}, Focus Loss: {total_focus_loss:.4f}, "
           f"Emotion Accuracy: {emotion_accuracy:.4f}, Focus Accuracy: {focus_accuracy:.4f}")
 
-# # 保存模型
-# torch.save(model.state_dict(), 'pth/shared_bottom_cnn_model1.pth')
-# print("模型已保存为 'shared_bottom_cnn_model.pth'")
+# 保存模型
+torch.save(model.state_dict(), 'pth/shared_bottom_cnn_model.pth')
+print("模型已保存为 'shared_bottom_cnn_model.pth'")

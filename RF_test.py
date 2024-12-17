@@ -5,7 +5,7 @@ from torch.utils.data import Dataset, DataLoader
 import xgboost as xgb
 
 # 定义数据加载器
-test_csv = 'data/test.csv'
+test_csv = 'data/normalized_test.csv'
 test_dataset = EmotionFocusDataset(test_csv)
 test_loader = DataLoader(test_dataset, batch_size=len(test_dataset), shuffle=False)
 

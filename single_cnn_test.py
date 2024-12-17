@@ -11,8 +11,8 @@ print(f"Using device: {device}")
 
 
 # 加载模型
-checkpoint = torch.load('pth/single_cnn_models.pth')
-csv_test_file = 'data/test.csv'
+checkpoint = torch.load('pth1/single_cnn_models.pth')
+csv_test_file = 'data/balanced_test.csv'
 emotion_output_dim = len(pd.read_csv(csv_test_file)['emotion'].unique())  # 表情类别数
 focus_output_dim = len(pd.read_csv(csv_test_file)['if_focus'].unique())  # 专注度类别数
 emotion_model = SimpleCNN(emotion_output_dim).to(device)
