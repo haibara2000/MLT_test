@@ -11,8 +11,8 @@ class EmotionFocusDataset(Dataset):
         # 加载 CSV 数据
         data = pd.read_csv(csv_file)
         # 假设前 58 列为特征，最后两列分别为 emotion 和 focus
-        features = data.iloc[:, 1:59].values
-        # features = data.iloc[:, 1:45].values   # 44
+        # features = data.iloc[:, 1:59].values
+        features = data.iloc[:, 1:45].values   # 44
         emotion_labels = data['emotion'].values
         focus_labels = data['if_focus'].values
 
@@ -32,8 +32,8 @@ class EmotionFocusDataset(Dataset):
                 continue
 
             # 封装成矩阵
-            self.features.append(feature_block.reshape(1, 58, 30))  # (1, 58, 30)
-            # self.features.append(feature_block.reshape(1, 44, 30))  # (1, 44, 30)
+            # self.features.append(feature_block.reshape(1, 58, 30))  # (1, 58, 30)
+            self.features.append(feature_block.reshape(1, 44, 30))  # (1, 44, 30)
 
             # 找到频率最高的标签
             self.emotion_labels.append(np.bincount(emotion_block.astype(int)).argmax())   # 统计表情

@@ -11,8 +11,8 @@ device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 print(f"Using device: {device}")
 
 # 数据加载
-# csv_file = 'data/train.csv'  # 替换为您的 CSV 文件路径
-csv_file = 'data/train.csv'  # 替换为您的 CSV 文件路径
+# csv_file = 'data/train.csv'
+csv_file = 'data/reduced_train.csv'
 dataset = EmotionFocusDataset(csv_file)
 dataloader = DataLoader(dataset, batch_size=32, shuffle=True)
 
@@ -44,7 +44,7 @@ def calculate_accuracy(predictions, labels):
     return accuracy
 
 # 训练过程
-epochs = 30
+epochs = 100
 for epoch in range(epochs):
     model.train()
     total_emotion_loss = 0.0
@@ -100,7 +100,11 @@ for epoch in range(epochs):
           f"log_sigma_emotion: {log_sigma_emotion.item():.4f}, log_sigma_focus: {log_sigma_focus.item():.4f}")
 
 # 保存模型
-torch.save(model.state_dict(), 'pth1/mmoe_cnn_model.pth')
+# torch.save(model.state_dict(), 'pth1/mmoe_cnn_model1.pth')   # 使用原始数据训练100个epoch的结果，存在过拟合（0.28,0.83）
+# torch.save(model.state_dict(), 'pth1/mmoe_cnn_model2.pth')   # 使用精简数据训练100个epoch的结果，训练准确率卡在71左右(29,70)
+torch.save(model.state_dict(), 'pth1/mmoe_cnn_model3.pth')   # 使用精简数据训练100个epoch的结果，训练准确率卡在71左右(29,70)
+
+
 # torch.save({'log_sigma_emotion': log_sigma_emotion, 'log_sigma_focus': log_sigma_focus},
 #            'pth/loss_weights.pth')
 print("模型及损失权重已保存")

@@ -8,7 +8,8 @@ from torch.utils.data import Dataset, DataLoader
 import pandas as pd
 
 # 加载测试数据
-csv_test_file = 'data/test.csv'  # 替换为您的测试集 CSV 文件路径
+# csv_test_file = 'data/test.csv'  # 替换为您的测试集 CSV 文件路径
+csv_test_file = 'data/reduced_test.csv'  # 替换为您的测试集 CSV 文件路径
 test_dataset = EmotionFocusDataset(csv_test_file)
 test_dataloader = DataLoader(test_dataset, batch_size=32, shuffle=False)
 
@@ -17,7 +18,7 @@ test_dataloader = DataLoader(test_dataset, batch_size=32, shuffle=False)
 emotion_output_dim = len(pd.read_csv(csv_test_file)['emotion'].unique())  # 表情类别数
 focus_output_dim = len(pd.read_csv(csv_test_file)['if_focus'].unique())  # 专注度类别数
 model = MMoECNNModel(emotion_output_dim, focus_output_dim, num_experts=6)
-model.load_state_dict(torch.load('pth1/mmoe_cnn_model.pth'))  # 0.2968, 0.8668
+model.load_state_dict(torch.load('pth1/mmoe_cnn_model2.pth'))  # 0.2968, 0.8668
 # model.load_state_dict(torch.load('pth_no_normalize/mmoe_cnn_uncertainty_model3.pth'))  # 0.2968, 0.8501
 # model.load_state_dict(torch.load('pth/mmoe_cnn_model2.pth'))  # 0.2968, 0.8462
 # model.load_state_dict(torch.load('pth/mmoe_cnn_uncertainty_model1.pth')) # 0.2968, 0.8348

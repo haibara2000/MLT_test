@@ -21,8 +21,8 @@ class MMoECNNModel(nn.Module):
 
         # 动态获取专家输出维度
         with torch.no_grad():
-            dummy_input = torch.randn(1, 1, 58, 30)
-            # dummy_input = torch.randn(1, 1, 44, 30) # 新样本，44种特征
+            # dummy_input = torch.randn(1, 1, 58, 30)
+            dummy_input = torch.randn(1, 1, 44, 30) # 新样本，44种特征
             self.expert_output_dim = self.experts[0](dummy_input).shape[-1]
 
         # 定义门控网络
