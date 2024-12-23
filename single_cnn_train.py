@@ -5,7 +5,7 @@ from torch.optim import Adam
 from sklearn.metrics import accuracy_score
 from data.load_data_in_group import EmotionFocusDataset
 from model.single_cnn import SimpleCNN
-
+import pandas as pd
 # 参数设置
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 batch_size = 32
@@ -18,12 +18,13 @@ dataset = EmotionFocusDataset(csv_file)
 train_loader = DataLoader(dataset, batch_size=batch_size, shuffle=True)
 
 # 获取输出类别数
+num_features = pd.read_csv(csv_file).iloc[:, 1:-4].shape[1]
 emotion_output_dim = len(set(dataset.emotion_labels.numpy()))
 focus_output_dim = len(set(dataset.focus_labels.numpy()))
 
 # 初始化模型、损失函数和优化器
-emotion_model = SimpleCNN(emotion_output_dim).to(device)
-focus_model = SimpleCNN(focus_output_dim).to(device)
+emotion_model = SimpleCNN(num_features, emotion_output_dim).to(device)
+focus_model = SimpleCNN(num_features, focus_output_dim).to(device)
 criterion = nn.CrossEntropyLoss()
 emotion_optimizer = Adam(emotion_model.parameters(), lr=learning_rate)
 focus_optimizer = Adam(focus_model.parameters(), lr=learning_rate)
@@ -77,5 +78,5 @@ for epoch in range(epochs):
 torch.save({
     'emotion_model_state_dict': emotion_model.state_dict(),
     'focus_model_state_dict': focus_model.state_dict()
-}, 'pth1/single_cnn_models.pth')
+}, 'pth_original1/single_cnn_models.pth')
 print("模型已保存到 'pth1/single_cnn_models.pth'")

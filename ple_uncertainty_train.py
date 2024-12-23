@@ -11,21 +11,24 @@ device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 print(f"Using device: {device}")
 
 # 加载数据
-csv_file = 'data/train.csv'
+# csv_file = 'data/train.csv'
+csv_file = 'data/normalized_train.csv'
+# csv_file = 'data/reduced_train.csv'
 dataset = EmotionFocusDataset(csv_file)
 dataloader = DataLoader(dataset, batch_size=32, shuffle=True)
 
 # 模型参数
+num_features = pd.read_csv(csv_file).iloc[:, 1:-4].shape[1]
 emotion_output_dim = len(pd.read_csv(csv_file)['emotion'].unique())
 focus_output_dim = len(pd.read_csv(csv_file)['if_focus'].unique())
 
 # 初始化模型
-model = PLEModel(num_CGC_layers=1,
-                 input_size=58,
+model = PLEModel(num_CGC_layers=2,
+                 input_size=num_features,
                  emotion_output_dim=emotion_output_dim,
                  focus_output_dim=focus_output_dim,
-                 num_specific_experts=2,
-                 num_shared_experts=1,
+                 num_specific_experts=4,
+                 num_shared_experts=2,
                  experts_out=32,
                  experts_hidden=64,
                  towers_hidden=128).to(device)
@@ -54,7 +57,7 @@ def calculate_accuracy(predictions, labels):
     return accuracy
 
 # 训练
-epochs = 30
+epochs = 100
 for epoch in range(epochs):
     model.train()
     total_emotion_loss = 0.0
@@ -109,5 +112,5 @@ for epoch in range(epochs):
           f"log_sigma_emotion: {log_sigma_emotion.item():.4f}, log_sigma_focus: {log_sigma_focus.item():.4f}")
 
 # 保存模型
-torch.save(model.state_dict(), 'pth1/ple_uncertainty_model1.pth')
+torch.save(model.state_dict(), 'pth_reduced/ple_uncertainty_model.pth')
 print("模型已保存")

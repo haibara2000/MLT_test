@@ -2,7 +2,7 @@ import torch
 import torch.nn as nn
 
 class MMoECNNModel(nn.Module):
-    def __init__(self, emotion_output_dim, focus_output_dim, num_experts=4):
+    def __init__(self, num_features, emotion_output_dim, focus_output_dim, num_experts=4):
         super(MMoECNNModel, self).__init__()
         self.num_experts = num_experts
 
@@ -21,8 +21,8 @@ class MMoECNNModel(nn.Module):
 
         # 动态获取专家输出维度
         with torch.no_grad():
-            # dummy_input = torch.randn(1, 1, 58, 30)
-            dummy_input = torch.randn(1, 1, 44, 30) # 新样本，44种特征
+            dummy_input = torch.randn(1, 1, num_features, 30)
+            # dummy_input = torch.randn(1, 1, 44, 30) # 新样本，44种特征
             self.expert_output_dim = self.experts[0](dummy_input).shape[-1]
 
         # 定义门控网络

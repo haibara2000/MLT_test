@@ -12,7 +12,15 @@ class Expert(nn.Module):
         self.relu2 = nn.ReLU()
         self.pool2 = nn.MaxPool2d(kernel_size=2, stride=2)
         self.flatten = nn.Flatten()
-        self.fc = nn.Linear(32 * 14 * 7, output_channels)  # 将CNN输出展平并进行线性变换
+        # self.fc = nn.Linear(32 * 14 * 7, output_channels)  # 将CNN输出展平并进行线性变换
+        self.fc = nn.Linear(2464, output_channels)
+
+        # # 计算输出的形状
+        # dummy_input = torch.zeros(1, input_channels, 58, 30)  # 假设输入的形状为 (batch_size, channels, height, width)
+        # # 通过前面几层计算输出的尺寸
+        # dummy_output = self.pool2(self.relu2(self.conv2(self.pool1(self.relu1(self.conv1(dummy_input)))))))
+        # flattened_size = dummy_output.numel()  # 展平后的元素个数
+        # self.fc = nn.Linear(flattened_size, output_channels)  # 使用动态计算的展平后的大小
 
     def forward(self, x):
         x = self.conv1(x)  # (batch_size, 16, 58, 30)

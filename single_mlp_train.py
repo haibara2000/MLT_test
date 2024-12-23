@@ -42,7 +42,8 @@ def main():
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')  # 检查是否有 GPU
     print(f"Using device: {device}")
 
-    csv_train_file = 'data/normalized_train.csv'  # 替换为您的训练集 CSV 文件路径
+    # csv_train_file = 'data/normalized_train.csv'
+    csv_train_file = 'data/train.csv'
 
     # 训练表情识别模型
     print("=== Training Emotion Recognition Model ===")
@@ -74,7 +75,8 @@ def main():
 
     # 保存两个任务的模型到一个文件
     print("\n=== Saving the models as a single .pth file ===")
-    model_save_path = 'pth/single_mlp_model.pth'
+    model_save_path = 'pth_origin/single_mlp_model.pth'
+    # model_save_path = 'pth_normalized/single_mlp_model.pth'
 
     # 合并两个模型的state_dict
     model_state_dict = {

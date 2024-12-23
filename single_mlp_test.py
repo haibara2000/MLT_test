@@ -29,11 +29,12 @@ def evaluate_model(model, dataloader):
 # 主函数
 def main():
     # 加载模型和数据到 GPU
-    csv_test_file = 'data/normalized_test.csv'  # 替换为您的测试集 CSV 文件路径
+    # csv_test_file = 'data/normalized_test.csv'
+    csv_test_file = 'data/test.csv'
 
     # 加载模型
     print("=== Loading the single_mlp_model ===")
-    checkpoint = torch.load('pth/single_mlp_model.pth')  # 加载保存的模型文件
+    checkpoint = torch.load('pth_origin/single_mlp_model.pth')  # 加载保存的模型文件
 
     emotion_input_dim = 58
     emotion_hidden_dim = 128

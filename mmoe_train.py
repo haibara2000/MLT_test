@@ -11,17 +11,18 @@ device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 print(f"Using device: {device}")
 
 # 数据加载
-# csv_file = 'data/train.csv'
-csv_file = 'data/reduced_train.csv'
+csv_file = 'data/train.csv'
+# csv_file = 'data/normalized_train.csv'
 dataset = EmotionFocusDataset(csv_file)
 dataloader = DataLoader(dataset, batch_size=32, shuffle=True)
 
 # 模型参数
+num_features = pd.read_csv(csv_file).iloc[:, 1:-4].shape[1]
 emotion_output_dim = len(pd.read_csv(csv_file)['emotion'].unique())  # 表情类别数
 focus_output_dim = len(pd.read_csv(csv_file)['if_focus'].unique())  # 专注度类别数
 
 # 初始化模型、损失函数和优化器
-model = MMoECNNModel(emotion_output_dim, focus_output_dim, num_experts=6).to(device)
+model = MMoECNNModel(num_features, emotion_output_dim, focus_output_dim, num_experts=6).to(device)
 emotion_criterion = nn.CrossEntropyLoss()  # 表情任务损失
 focus_criterion = nn.CrossEntropyLoss()  # 专注度任务损失
 # 引入可训练的不确定性参数（log_sigma^2），用于调整权重
@@ -44,7 +45,7 @@ def calculate_accuracy(predictions, labels):
     return accuracy
 
 # 训练过程
-epochs = 100
+epochs = 30
 for epoch in range(epochs):
     model.train()
     total_emotion_loss = 0.0
@@ -102,7 +103,7 @@ for epoch in range(epochs):
 # 保存模型
 # torch.save(model.state_dict(), 'pth1/mmoe_cnn_model1.pth')   # 使用原始数据训练100个epoch的结果，存在过拟合（0.28,0.83）
 # torch.save(model.state_dict(), 'pth1/mmoe_cnn_model2.pth')   # 使用精简数据训练100个epoch的结果，训练准确率卡在71左右(29,70)
-torch.save(model.state_dict(), 'pth1/mmoe_cnn_model3.pth')   # 使用精简数据训练100个epoch的结果，训练准确率卡在71左右(29,70)
+torch.save(model.state_dict(), 'pth_normalized/mmoe_cnn_model1220.pth')   # 使用精简数据训练100个epoch的结果，训练准确率卡在71左右(29,70)
 
 
 # torch.save({'log_sigma_emotion': log_sigma_emotion, 'log_sigma_focus': log_sigma_focus},

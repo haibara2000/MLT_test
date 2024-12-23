@@ -5,7 +5,8 @@ from torch.utils.data import Dataset, DataLoader
 import xgboost as xgb
 
 # 定义数据加载器
-test_csv = 'data/normalized_test.csv'
+test_csv = 'data/test.csv'
+# test_csv = 'data/normalized_test.csv'
 test_dataset = EmotionFocusDataset(test_csv)
 test_loader = DataLoader(test_dataset, batch_size=len(test_dataset), shuffle=False)
 
@@ -13,10 +14,9 @@ test_loader = DataLoader(test_dataset, batch_size=len(test_dataset), shuffle=Fal
 X_test, y_test_emotion, y_test_focus = prepare_data(test_loader)
 
 # 加载合并模型
-checkpoint = torch.load('pth/decision_tree_models.pth')
+checkpoint = torch.load('pth_origin_1220/decision_tree_models.pth')
 emotion_model = checkpoint['emotion_model']
 focus_model = checkpoint['focus_model']
-print("Combined model loaded from 'pth/decision_tree_models.pth'")
 
 # 预测
 y_pred_emotion = emotion_model.predict(X_test)

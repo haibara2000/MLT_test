@@ -8,7 +8,8 @@ import joblib  # 用于保存和加载模型
 import os
 
 # 定义数据加载器
-train_csv = 'data/normalized_train.csv'
+# train_csv = 'data/normalized_train.csv'
+train_csv = 'data/train.csv'
 batch_size = 32
 
 train_dataset = EmotionFocusDataset(train_csv)
@@ -41,5 +42,5 @@ print(f"Focus Model Training Accuracy: {focus_train_acc:.4f}")
 
 # 保存模型到一个 `.pth` 文件
 os.makedirs('models', exist_ok=True)
-torch.save({'emotion_model': emotion_model, 'focus_model': focus_model}, 'pth/rf_models.pth')
+torch.save({'emotion_model': emotion_model, 'focus_model': focus_model}, 'pth_origin/rf_models.pth')
 print("Combined model saved as 'pth/rf_models.pth'")

@@ -51,5 +51,5 @@ bst_focus = xgb.train(params_focus, dtrain_focus, num_boost_round=100)
 # 保存模型为字典
 os.makedirs('models', exist_ok=True)
 torch.save({'emotion_model': bst_emotion.save_raw(),
-            'focus_model': bst_focus.save_raw()}, 'pth1/xgboost_models1.pth')
-print("Models saved as 'models/xgboost_models1.pth'")
+            'focus_model': bst_focus.save_raw()}, 'pth_origin/xgboost_models.pth')
+print("Models saved as 'xgboost_models.pth'")

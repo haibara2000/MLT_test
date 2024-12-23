@@ -5,14 +5,19 @@ from torch.utils.data import Dataset, DataLoader
 import pandas as pd
 import numpy as np
 
+
 # 自定义数据集类
 class EmotionFocusDataset(Dataset):
-    def __init__(self, csv_file):
+    # 初始化数据集，以window_size为窗口大小的一组
+    def __init__(self, csv_file, window_size=30):
         # 加载 CSV 数据
         data = pd.read_csv(csv_file)
-        # 假设前 58 列为特征，最后两列分别为 emotion 和 focus
-        # features = data.iloc[:, 1:59].values
-        features = data.iloc[:, 1:45].values   # 44
+
+        # 动态获取特征列数：假设前 1 到倒数第 4 列为特征
+        num_features = data.iloc[:, 1:-4].shape[1]
+
+        # 提取特征和标签
+        features = data.iloc[:, 1:-4].values
         emotion_labels = data['emotion'].values
         focus_labels = data['if_focus'].values
 
@@ -21,22 +26,21 @@ class EmotionFocusDataset(Dataset):
         self.emotion_labels = []
         self.focus_labels = []
 
-        for i in range(0, len(features), 30):
-            # 获取 30 个样本的特征和标签
-            feature_block = features[i:i + 30]
-            emotion_block = emotion_labels[i:i + 30]
-            focus_block = focus_labels[i:i + 30]
+        for i in range(0, len(features), window_size):
+            # 获取窗口大小的样本
+            feature_block = features[i:i + window_size]
+            emotion_block = emotion_labels[i:i + window_size]
+            focus_block = focus_labels[i:i + window_size]
 
-            # 如果不足 30 个样本，跳过
-            if len(feature_block) < 30:
+            # 如果不足一个窗口大小，跳过
+            if len(feature_block) < window_size:
                 continue
 
-            # 封装成矩阵
-            # self.features.append(feature_block.reshape(1, 58, 30))  # (1, 58, 30)
-            self.features.append(feature_block.reshape(1, 44, 30))  # (1, 44, 30)
+            # 封装成矩阵 (1, num_features, window_size)
+            self.features.append(feature_block.reshape(1, num_features, window_size))
 
             # 找到频率最高的标签
-            self.emotion_labels.append(np.bincount(emotion_block.astype(int)).argmax())   # 统计表情
+            self.emotion_labels.append(np.bincount(emotion_block.astype(int)).argmax())  # 统计表情
             self.focus_labels.append(np.bincount(focus_block.astype(int)).argmax())  # 统计专注度
 
         # 转换为 Tensor

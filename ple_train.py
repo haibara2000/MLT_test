@@ -11,7 +11,8 @@ device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 print(f"Using device: {device}")
 
 # 加载数据
-csv_file = 'data/train.csv'
+# csv_file = 'data/train.csv'
+csv_file = 'data/reduced_train.csv'
 dataset = EmotionFocusDataset(csv_file)
 dataloader = DataLoader(dataset, batch_size=32, shuffle=True)
 
@@ -92,5 +93,5 @@ for epoch in range(epochs):
           f"Emotion Accuracy: {epoch_emotion_accuracy:.4f}, Focus Accuracy: {epoch_focus_accuracy:.4f}")
 
 # 保存模型
-torch.save(model.state_dict(), 'pth1/ple_cnn_model.pth')
+torch.save(model.state_dict(), 'pth_reduced/ple_cnn_model.pth')
 print("模型已保存")

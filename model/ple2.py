@@ -13,6 +13,7 @@ class Expert1(nn.Module):
         self.pool2 = nn.MaxPool2d(kernel_size=2, stride=2)
         self.flatten = nn.Flatten()
         self.fc = nn.Linear(32 * 14 * 7, output_channels)  # 将CNN输出展平并进行线性变换
+        # self.fc = nn.Linear(2464, output_channels)  # 将CNN输出展平并进行线性变换
 
     def forward(self, x):
         x = self.conv1(x)  # (batch_size, 16, 58, 30)
@@ -58,7 +59,7 @@ class CGC(nn.Module):
             self.experts_shared = nn.ModuleList([Expert1(1, self.experts_out) for _ in range(self.num_shared_experts)])   # 32 * 14 * 7
             self.experts_task1 = nn.ModuleList([Expert1(1, self.experts_out) for _ in range(self.num_specific_experts)])
             self.experts_task2 = nn.ModuleList([Expert1(1, self.experts_out) for _ in range(self.num_specific_experts)])
-            gate_input_size = 58 * 30  # 第一层的门控网络输入维度来自CNN的输出
+            gate_input_size = input_size * 30  # 第一层的门控网络输入维度来自CNN的输出
         else:
             self.experts_shared = nn.ModuleList([Expert2(self.input_size, self.experts_hidden, self.experts_out) for _ in
                                                 range(self.num_shared_experts)])

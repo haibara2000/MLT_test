@@ -10,7 +10,7 @@ class SingleTaskDataset(Dataset):
     def __init__(self, csv_file, target_column):
         data = pd.read_csv(csv_file)
         # 假设 1:58 列为特征，target_column 为标签
-        self.features = torch.tensor(data.iloc[:, 1:59].values, dtype=torch.float32)
+        self.features = torch.tensor(data.iloc[:, 1:-4].values, dtype=torch.float32)
         self.labels = torch.tensor(data[target_column].values, dtype=torch.long)
 
     def __len__(self):

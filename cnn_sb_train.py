@@ -30,11 +30,12 @@ dataset = EmotionFocusDataset(csv_file)
 dataloader = DataLoader(dataset, batch_size=32, shuffle=True)
 
 # 模型参数
+num_features = pd.read_csv(csv_file).iloc[:, 1:-4].shape[1]  # 特征数
 emotion_output_dim = len(pd.read_csv(csv_file)['emotion'].unique())  # 表情类别数
 focus_output_dim = len(pd.read_csv(csv_file)['if_focus'].unique())  # 专注度类别数
 
 # 初始化模型、损失函数和优化器
-model = SharedBottomCNNModel(emotion_output_dim, focus_output_dim)
+model = SharedBottomCNNModel(num_features, emotion_output_dim, focus_output_dim)
 emotion_criterion = nn.CrossEntropyLoss()  # 表情任务损失
 focus_criterion = nn.CrossEntropyLoss()  # 专注度任务损失
 optimizer = optim.Adam(model.parameters(), lr=0.001)
@@ -87,5 +88,5 @@ for epoch in range(epochs):
           f"Emotion Accuracy: {emotion_accuracy:.4f}, Focus Accuracy: {focus_accuracy:.4f}")
 
 # 保存模型
-torch.save(model.state_dict(), 'pth/shared_bottom_cnn_model.pth')
+torch.save(model.state_dict(), 'pth_normalized/shared_bottom_cnn_model.pth')
 print("模型已保存为 'shared_bottom_cnn_model.pth'")

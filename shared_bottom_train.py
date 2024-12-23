@@ -11,7 +11,8 @@ device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')  # 检查�
 print(f"Using device: {device}")
 
 # 加载数据
-csv_file = 'data/normalized_train.csv'  # 替换为您的 CSV 文件路径
+# csv_file = 'data/normalized_train.csv'
+csv_file = 'data/train.csv'
 dataset = EmotionFocusDataset(csv_file)
 dataloader = DataLoader(dataset, batch_size=32, shuffle=True)
 
@@ -73,5 +74,6 @@ for epoch in range(epochs):
     print(f"Epoch [{epoch+1}/{epochs}], Emotion Accuracy: {emotion_acc:.4f}, Focus Accuracy: {focus_acc:.4f}")
 
 # 保存模型
-torch.save(model.state_dict(), 'pth/shared_bottom_mlp_model.pth')
+torch.save(model.state_dict(), 'pth_origin/shared_bottom_mlp_model.pth')
+# torch.save(model.state_dict(), 'pth_normalized/shared_bottom_mlp_model.pth')
 print("模型已保存为 'shared_bottom_mlp_model.pth'")

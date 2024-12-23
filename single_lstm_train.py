@@ -79,5 +79,5 @@ for epoch in range(epochs):
 torch.save({
     'emotion_model_state_dict': emotion_model.state_dict(),
     'focus_model_state_dict': focus_model.state_dict()
-}, 'pth/single_lstm_models.pth')
+}, 'pth_normalized/single_lstm_models.pth')
 print("模型已保存到 'pth/single_lstm_models.pth'")
