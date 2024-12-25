@@ -23,7 +23,7 @@ model = MMoECNNModel(num_features, emotion_output_dim, focus_output_dim, num_exp
 # model.load_state_dict(torch.load('pth_best/mmoe_cnn_model.pth'))  # 0.2968, 0.8668（原始数据100epoch）
 
 # 其他运行结果
-model.load_state_dict(torch.load('pth_normalized/mmoe_cnn_model.pth'))  # 0.2968, 0.8668（原始数据100epoch）
+model.load_state_dict(torch.load('pth_normalized/mmoe_cnn_model12232.pth'))  # 0.2968, 0.8668（原始数据100epoch）
 # model.load_state_dict(torch.load('pth1/mmoe_cnn_model1.pth'))  # 0.2726, 0.8379
 # model.load_state_dict(torch.load('pth_no_normalize/mmoe_cnn_uncertainty_model3.pth'))  # 0.2968, 0.8501
 # model.load_state_dict(torch.load('pth/mmoe_cnn_model2.pth'))  # 0.2968, 0.8462

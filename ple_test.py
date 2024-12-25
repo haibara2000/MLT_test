@@ -12,6 +12,7 @@ test_dataset = EmotionFocusDataset(csv_test_file)
 test_dataloader = DataLoader(test_dataset, batch_size=32, shuffle=False)
 
 # 加载模型
+num_features = pd.read_csv(csv_test_file).iloc[:, 1:-4].shape[1]
 emotion_output_dim = len(pd.read_csv(csv_test_file)['emotion'].unique())
 focus_output_dim = len(pd.read_csv(csv_test_file)['if_focus'].unique())
 # 初始化模型
@@ -26,17 +27,17 @@ focus_output_dim = len(pd.read_csv(csv_test_file)['if_focus'].unique())
 #                  experts_hidden=64,
 #                  towers_hidden=128)
 # 初始化模型
-model = PLEModel(num_CGC_layers=1,
-                 input_size=58,
+model = PLEModel(num_CGC_layers=2,
+                 input_size=num_features,
                  emotion_output_dim=emotion_output_dim,
                  focus_output_dim=focus_output_dim,
-                 num_specific_experts=1,
-                 num_shared_experts=1,
+                 num_specific_experts=4,
+                 num_shared_experts=2,
                  experts_out=32,
                  experts_hidden=64,
                  towers_hidden=128)
 # model.load_state_dict(torch.load('pth/ple_cnn_model5.pth'))   # 0.2601, 0.7266
-model.load_state_dict(torch.load('pth/ple_uncertainty_model.pth'))  # 0.2968, 0.7013
+model.load_state_dict(torch.load('pth_normalized/best_ple_uncertainty_model.pth'))  # 0.2968, 0.7013
 # model.load_state_dict(torch.load('pth/ple_uncertainty_model2.pth'))  # 0.2968, 0.7013
 model.eval()
 

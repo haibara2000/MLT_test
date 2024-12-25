@@ -57,7 +57,7 @@ def calculate_accuracy(predictions, labels):
     return accuracy
 
 # 训练
-epochs = 100
+epochs = 20
 for epoch in range(epochs):
     model.train()
     total_emotion_loss = 0.0
@@ -112,5 +112,5 @@ for epoch in range(epochs):
           f"log_sigma_emotion: {log_sigma_emotion.item():.4f}, log_sigma_focus: {log_sigma_focus.item():.4f}")
 
 # 保存模型
-torch.save(model.state_dict(), 'pth_reduced/ple_uncertainty_model.pth')
+torch.save(model.state_dict(), 'pth_normalized/ple_uncertainty_model.pth')
 print("模型已保存")

@@ -2,7 +2,7 @@ import pandas as pd
 import numpy as np
 
 # 读取数据
-file_path = 'normalized_test.csv'  # 这里替换为你数据文件的路径
+file_path = 'history/normalized_test.csv'  # 这里替换为你数据文件的路径
 df = pd.read_csv(file_path)
 
 # 提取标签列（假设if_focus是标签列之一，最后一列）

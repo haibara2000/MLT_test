@@ -3,7 +3,7 @@ from imblearn.over_sampling import SMOTE
 from imblearn.under_sampling import RandomUnderSampler
 
 # 读取数据
-data = pd.read_csv('normalized_train.csv')
+data = pd.read_csv('history/normalized_train.csv')
 
 # 提取特征和标签
 X = data.drop(columns=['if_focus'])  # 删除 'if_focus' 列，剩下的就是特征

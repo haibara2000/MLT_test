@@ -8,7 +8,7 @@ from torch.utils.data import Dataset, DataLoader
 import pandas as pd
 
 # 加载测试数据
-csv_test_file = 'data/normalized_test.csv'  # 替换为您的测试集 CSV 文件路径
+csv_test_file = 'data/history/normalized_test.csv'  # 替换为您的测试集 CSV 文件路径
 test_dataset = EmotionFocusDataset(csv_test_file)
 test_dataloader = DataLoader(test_dataset, batch_size=32, shuffle=False)
 

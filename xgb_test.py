@@ -20,7 +20,7 @@ dtest_focus = xgb.DMatrix(X_test, label=y_test_focus)
 
 # 加载模型
 # checkpoint = torch.load('pth/xgboost_models.pth')
-checkpoint = torch.load('pth_origin_1220/xgboost_models.pth')
+checkpoint = torch.load('pth_normalized/xgboost_models.pth')
 bst_emotion = xgb.Booster()
 bst_emotion.load_model(checkpoint['emotion_model'])
 

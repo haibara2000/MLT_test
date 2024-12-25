@@ -7,9 +7,9 @@ import numpy as np
 import os
 
 # 定义数据加载器
-# train_csv = 'data/normalized_train.csv'
+train_csv = 'data/normalized_train.csv'
 # train_csv = 'data/balanced_train.csv'
-train_csv = 'data/train.csv'
+# train_csv = 'data/train.csv'
 batch_size = 32
 
 train_dataset = EmotionFocusDataset(train_csv)
@@ -51,5 +51,5 @@ bst_focus = xgb.train(params_focus, dtrain_focus, num_boost_round=100)
 # 保存模型为字典
 os.makedirs('models', exist_ok=True)
 torch.save({'emotion_model': bst_emotion.save_raw(),
-            'focus_model': bst_focus.save_raw()}, 'pth_origin/xgboost_models.pth')
+            'focus_model': bst_focus.save_raw()}, 'pth_normalized/xgboost_models.pth')
 print("Models saved as 'xgboost_models.pth'")

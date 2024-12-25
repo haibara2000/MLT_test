@@ -11,7 +11,7 @@ print(f"Using device: {device}")
 
 # 加载模型
 checkpoint = torch.load('pth/single_lstm_models.pth')
-csv_test_file = 'data/normalized_test.csv'
+csv_test_file = 'data/history/normalized_test.csv'
 input_dim = 58  # 每个时间步的特征维度
 hidden_dim = 128
 num_layers = 2

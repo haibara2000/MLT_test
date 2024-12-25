@@ -16,7 +16,7 @@ class SimpleCNN(nn.Module):
         # shared_output_dim = 32 * 14 * 7
 
         # 计算共享层展平后的输出维度
-        dummy_input = torch.zeros(1, 1, num_features, 30)  # 假设输入的形状为 (batch_size, channels, height, width)
+        dummy_input = torch.zeros(1, 1, num_features, 10)  # 假设输入的形状为 (batch_size, channels, height, width)
         # 先通过共享层计算输出，再查看其展平后的大小
         shared_output_dim = self.conv(dummy_input).shape[1]  # 获取展平后的大小
 

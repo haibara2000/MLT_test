@@ -72,7 +72,7 @@ for epoch in range(epochs):
           f"log_sigma_focus: {log_sigma_focus.item():.4f}")
 
 # 保存模型
-torch.save(model.state_dict(), 'pth_normalized/shared_bottom_cnn_uncertainty_model1.pth')
+torch.save(model.state_dict(), 'data/history/pth_normalized/shared_bottom_cnn_uncertainty_model1.pth')
 torch.save({'log_sigma_emotion': log_sigma_emotion, 'log_sigma_focus': log_sigma_focus},
            'pth_no_normalize/loss_weights.pth')
 print("模型及损失权重已保存")

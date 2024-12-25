@@ -10,8 +10,8 @@ from sklearn.preprocessing import label_binarize
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
 # 加载测试数据
-csv_test_file = 'data/test.csv'
-# csv_test_file = 'data/normalized_test.csv'
+# csv_test_file = 'data/test.csv'
+csv_test_file = 'data/normalized_test.csv'
 test_dataset = EmotionFocusDataset(csv_test_file)
 test_dataloader = DataLoader(test_dataset, batch_size=32, shuffle=False)
 
@@ -22,7 +22,7 @@ shared_hidden_dim = 128
 emotion_output_dim = len(pd.read_csv(csv_test_file)['emotion'].unique())  # 表情类别数
 focus_output_dim = len(pd.read_csv(csv_test_file)['if_focus'].unique())  # 专注度类别数
 model = SharedBottomMlpModel(input_dim, shared_hidden_dim, emotion_output_dim, focus_output_dim)
-model.load_state_dict(torch.load('pth_origin/shared_bottom_mlp_model.pth'))
+model.load_state_dict(torch.load('pth_normalized/shared_bottom_mlp_model.pth'))
 model.to(device)  # 将模型转移到 GPU
 model.eval()  # 切换到评估模式
 

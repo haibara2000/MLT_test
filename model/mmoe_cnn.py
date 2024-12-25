@@ -1,5 +1,6 @@
 import torch
 import torch.nn as nn
+from module.FeatureAttention import FeatureAttention
 
 class MMoECNNModel(nn.Module):
     def __init__(self, num_features, emotion_output_dim, focus_output_dim, num_experts=4):

@@ -25,7 +25,7 @@ set_random_seed(seed)
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')  # 检查是否有 GPU
 print(f"Using device: {device}")
 # 加载数据
-csv_file = 'data/normalized_train.csv'  # 替换为您的 CSV 文件路径
+csv_file = 'data/history/normalized_train.csv'  # 替换为您的 CSV 文件路径
 dataset = EmotionFocusDataset(csv_file)
 dataloader = DataLoader(dataset, batch_size=32, shuffle=True)
 
@@ -88,5 +88,5 @@ for epoch in range(epochs):
           f"Emotion Accuracy: {emotion_accuracy:.4f}, Focus Accuracy: {focus_accuracy:.4f}")
 
 # 保存模型
-torch.save(model.state_dict(), 'pth_normalized/shared_bottom_cnn_model.pth')
+torch.save(model.state_dict(), 'data/history/pth_normalized/shared_bottom_cnn_model.pth')
 print("模型已保存为 'shared_bottom_cnn_model.pth'")
